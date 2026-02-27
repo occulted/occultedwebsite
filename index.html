@@ -21,7 +21,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow-x: hidden;
+      overflow: hidden;
       transition: none;
     }
 
@@ -36,38 +36,34 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 80px;
+      gap: 60px;
       padding: 20px;
     }
 
-    /* ✅ Wrapper que reserva espaço real para o scaleY */
     .title-wrapper {
       width: 100%;
       text-align: center;
-      /* ✅ Reserva altura extra para o scaleY não cortar */
-      padding: 60px 0;
-      overflow: visible;
+      /* ✅ Garante que o texto não vaze */
+      overflow: hidden;
+      padding: 40px 0;
     }
 
-    /* ✅ Fonte baseada em vw — se adapta a qualquer tela */
     .title {
+      /* ✅ Fonte menor para caber na tela após o scaleY */
+      font-size: clamp(1rem, 4.5vw, 4rem);
       font-weight: 900;
       text-transform: uppercase;
       text-align: center;
+      /* ✅ line-height generoso para as linhas não se sobreporem */
+      line-height: 1.1;
+      letter-spacing: -2px;
       font-family: Arial Black, Arial, sans-serif;
       display: block;
       color: #000000;
       transition: none;
-      white-space: nowrap;
-
-      /* ✅ Desktop — fonte cabe na largura */
-      font-size: 11.5vw;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-
-      /* ✅ Distorção vertical */
-      transform: scaleY(1.8);
-      transform-origin: center center;
+      /* ✅ scaleY aplicado — distorção vertical */
+      transform: scaleY(2.2);
+      transform-origin: center;
     }
 
     body.inverted .title {
@@ -109,6 +105,7 @@
 
     .contact-card:not(:last-child) {
       border-right: 1.5px solid #000000;
+      transition: none;
     }
 
     body.inverted .contact-card:not(:last-child) {
@@ -156,30 +153,17 @@
       color: #ffffff;
     }
 
-    /* ✅ MOBILE */
-    @media (max-width: 768px) {
-      .container {
-        gap: 60px;
-      }
-
-      .title-wrapper {
-        padding: 40px 0;
-      }
-
+    /* Responsivo mobile */
+    @media (max-width: 600px) {
       .title {
-        /* ✅ Mobile — cada palavra em linha separada, fonte por vw */
-        white-space: normal;
-        font-size: 18vw;
-        line-height: 1.15;
-        letter-spacing: -0.02em;
-        transform: scaleY(1.6);
-        word-break: keep-all;
-        padding: 0 10px;
+        font-size: clamp(0.8rem, 5vw, 2rem);
+        transform: scaleY(2.0);
+        letter-spacing: -1px;
       }
 
       .contacts {
         flex-direction: column;
-        width: 85%;
+        width: 90%;
         max-width: 360px;
       }
 
@@ -190,20 +174,11 @@
 
       body.inverted .contact-card:not(:last-child) {
         border-bottom: 1.5px solid #ffffff;
-        border-right: none;
       }
 
       .contact-card {
-        padding: 22px 20px;
+        padding: 24px 20px;
         width: 100%;
-      }
-    }
-
-    /* ✅ Telas muito pequenas */
-    @media (max-width: 380px) {
-      .title {
-        font-size: 16vw;
-        transform: scaleY(1.5);
       }
     }
   </style>
@@ -213,7 +188,7 @@
 
     <div class="title-wrapper">
       <h1 class="title">
-        WEBSITE<br>UNDER<br>CONSTRUCTION
+        WEBSITE UNDER<br>CONSTRUCTION
       </h1>
     </div>
 
@@ -274,6 +249,7 @@
     function startStrobe() {
       if (isMoving) return;
       isMoving = true;
+
       strobeInterval = setInterval(() => {
         document.body.classList.toggle('inverted');
       }, 80);
@@ -285,19 +261,17 @@
       document.body.classList.remove('inverted');
     }
 
-    // ✅ Desktop
     document.addEventListener('mousemove', () => {
       startStrobe();
       clearTimeout(timeout);
       timeout = setTimeout(stopStrobe, 150);
     });
 
-    // ✅ Mobile — strobe ao tocar e arrastar
     document.addEventListener('touchmove', () => {
       startStrobe();
       clearTimeout(timeout);
       timeout = setTimeout(stopStrobe, 150);
-    }, { passive: true });
+    });
   </script>
 </body>
 </html>
