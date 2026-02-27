@@ -12,6 +12,7 @@
       box-sizing: border-box;
     }
 
+    /* ✅ Transição suave na inversão */
     body {
       background-color: #ffffff;
       color: #000000;
@@ -22,6 +23,12 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      transition: filter 0.3s ease;
+    }
+
+    /* ✅ Classe que inverte tudo na página */
+    body.inverted {
+      filter: invert(1);
     }
 
     .container {
@@ -48,7 +55,6 @@
       letter-spacing: -2px;
       font-family: Arial Black, Arial, sans-serif;
       display: block;
-      /* ✅ Distorção vertical controlada */
       transform: scaleY(1.5);
       transform-origin: center;
     }
@@ -131,14 +137,12 @@
 <body>
   <div class="container">
 
-    <!-- ✅ Título em duas linhas, tamanho controlado -->
     <div class="title-wrapper">
       <h1 class="title">
         WEBSITE UNDER<br>CONSTRUCTION
       </h1>
     </div>
 
-    <!-- Cards de contato -->
     <div class="contacts">
 
       <!-- Instagram -->
@@ -187,5 +191,30 @@
 
     </div>
   </div>
+
+  <script>
+    let timeout;
+
+    // ✅ Inverte ao mover o cursor
+    document.addEventListener('mousemove', () => {
+      document.body.classList.add('inverted');
+
+      // ✅ Remove a inversão 0.8s após parar de mover
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        document.body.classList.remove('inverted');
+      }, 800);
+    });
+
+    // ✅ Mobile — inverte ao tocar na tela
+    document.addEventListener('touchmove', () => {
+      document.body.classList.add('inverted');
+
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        document.body.classList.remove('inverted');
+      }, 800);
+    });
+  </script>
 </body>
 </html>
