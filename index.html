@@ -12,7 +12,7 @@
       box-sizing: border-box;
     }
 
-    /* ✅ Transição suave na inversão */
+    /* ✅ Estado normal — fundo branco */
     body {
       background-color: #ffffff;
       color: #000000;
@@ -23,12 +23,14 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      transition: filter 0.3s ease;
+      /* ✅ Sem transição — strobe imediato */
+      transition: none;
     }
 
-    /* ✅ Classe que inverte tudo na página */
+    /* ✅ Estado invertido — fundo preto */
     body.inverted {
-      filter: invert(1);
+      background-color: #000000;
+      color: #ffffff;
     }
 
     .container {
@@ -46,6 +48,7 @@
       text-align: center;
     }
 
+    /* ✅ Título normal — preto */
     .title {
       font-size: clamp(1.5rem, 7vw, 6rem);
       font-weight: 900;
@@ -57,13 +60,26 @@
       display: block;
       transform: scaleY(1.5);
       transform-origin: center;
+      color: #000000;
+      transition: none;
     }
 
-    /* Cards de contato */
+    /* ✅ Título invertido — branco */
+    body.inverted .title {
+      color: #ffffff;
+    }
+
+    /* ✅ Cards normal — borda preta */
     .contacts {
       display: flex;
       flex-direction: row;
       border: 1.5px solid #000000;
+      transition: none;
+    }
+
+    /* ✅ Cards invertido — borda branca */
+    body.inverted .contacts {
+      border: 1.5px solid #ffffff;
     }
 
     .contact-card {
@@ -75,37 +91,76 @@
       padding: 28px 40px;
       text-decoration: none;
       color: #000000;
-      transition: background-color 0.2s ease;
       cursor: pointer;
+      transition: none;
     }
 
-    .contact-card:not(:last-child) {
-      border-right: 1.5px solid #000000;
-    }
-
+    /* ✅ Hover normal */
     .contact-card:hover {
       background-color: #f5f5f5;
     }
 
+    /* ✅ Hover invertido */
+    body.inverted .contact-card:hover {
+      background-color: #1a1a1a;
+    }
+
+    .contact-card:not(:last-child) {
+      border-right: 1.5px solid #000000;
+      transition: none;
+    }
+
+    /* ✅ Divisória invertida */
+    body.inverted .contact-card:not(:last-child) {
+      border-right: 1.5px solid #ffffff;
+    }
+
+    /* ✅ Cor do texto dos cards invertida */
+    body.inverted .contact-card {
+      color: #ffffff;
+    }
+
+    /* ✅ Ícones normal — pretos */
     .contact-card svg {
       width: 24px;
       height: 24px;
       stroke: #000000;
       fill: none;
       stroke-width: 1.5;
+      transition: none;
     }
 
+    /* ✅ Ícones invertidos — brancos */
+    body.inverted .contact-card svg {
+      stroke: #ffffff;
+    }
+
+    /* ✅ Label normal — cinza */
     .contact-label {
       font-size: 0.65rem;
       text-transform: uppercase;
       letter-spacing: 2px;
       color: #999999;
+      transition: none;
     }
 
+    /* ✅ Label invertido — branco (cinza some no preto) */
+    body.inverted .contact-label {
+      color: #ffffff;
+    }
+
+    /* ✅ Valor normal — preto */
     .contact-value {
       font-size: 0.9rem;
       font-weight: 700;
       text-align: center;
+      color: #000000;
+      transition: none;
+    }
+
+    /* ✅ Valor invertido — branco */
+    body.inverted .contact-value {
+      color: #ffffff;
     }
 
     /* Responsivo mobile */
@@ -125,6 +180,10 @@
       .contact-card:not(:last-child) {
         border-right: none;
         border-bottom: 1.5px solid #000000;
+      }
+
+      body.inverted .contact-card:not(:last-child) {
+        border-bottom: 1.5px solid #ffffff;
       }
 
       .contact-card {
@@ -194,26 +253,38 @@
 
   <script>
     let timeout;
+    let strobeInterval;
+    let isMoving = false;
 
-    // ✅ Inverte ao mover o cursor
+    function startStrobe() {
+      if (isMoving) return;
+      isMoving = true;
+
+      // ✅ Strobe — alterna rapidamente sem transição
+      strobeInterval = setInterval(() => {
+        document.body.classList.toggle('inverted');
+      }, 80); // ✅ 80ms = strobe rápido como luz estroboscópica
+    }
+
+    function stopStrobe() {
+      isMoving = false;
+      clearInterval(strobeInterval);
+      // ✅ Volta ao estado normal (branco) ao parar
+      document.body.classList.remove('inverted');
+    }
+
+    // ✅ Mouse
     document.addEventListener('mousemove', () => {
-      document.body.classList.add('inverted');
-
-      // ✅ Remove a inversão 0.8s após parar de mover
+      startStrobe();
       clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        document.body.classList.remove('inverted');
-      }, 800);
+      timeout = setTimeout(stopStrobe, 150);
     });
 
-    // ✅ Mobile — inverte ao tocar na tela
+    // ✅ Mobile touch
     document.addEventListener('touchmove', () => {
-      document.body.classList.add('inverted');
-
+      startStrobe();
       clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        document.body.classList.remove('inverted');
-      }, 800);
+      timeout = setTimeout(stopStrobe, 150);
     });
   </script>
 </body>
