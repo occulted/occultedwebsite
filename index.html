@@ -40,16 +40,15 @@
     }
 
     .title {
-      font-size: clamp(3rem, 10vw, 10rem);
+      font-size: clamp(3rem, 12vw, 12rem);
       font-weight: 900;
       text-transform: uppercase;
       text-align: center;
-      line-height: 1;
+      line-height: 0.9;
       letter-spacing: -4px;
       font-family: Arial Black, Arial, sans-serif;
-      white-space: nowrap;
       display: block;
-      /* ✅ Distorção VERTICAL - estica na altura */
+      /* ✅ Distorção vertical */
       transform: scaleY(1.6);
       transform-origin: center;
     }
@@ -108,9 +107,7 @@
       .title {
         transform: scaleY(1.4);
         letter-spacing: -2px;
-        font-size: clamp(1.8rem, 8vw, 4rem);
-        white-space: normal;
-        word-break: break-word;
+        font-size: clamp(2rem, 12vw, 5rem);
       }
 
       .contacts {
@@ -134,9 +131,9 @@
 <body>
   <div class="container">
 
-    <!-- Título com distorção vertical -->
+    <!-- ✅ Duas linhas separadas -->
     <div class="title-wrapper">
-      <h1 class="title">WEBSITE UNDERCONSTRUCTION</h1>
+      <h1 class="title">WEBSITE UNDER<br>CONSTRUCTION</h1>
     </div>
 
     <!-- Cards de contato -->
